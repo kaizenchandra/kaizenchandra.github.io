@@ -63,5 +63,5 @@ for required in ['Publicis Sapient','HTC Global Services','Siemens','Cyber Infra
     assert required in source, f'Missing required fact: {required}'
 assert (ROOT/'assets/images/og-cover.png').is_file()
 print('PASS SVG/XML, manifest, required profile facts, social PNG')
-print('EXPECTED CONTENT GAPS: real resume PDF, verified projects/artifacts, production URL')
-print('Static checks passed. See REPORT.md for browser validation and limitations.')
+print('Publication note: resume is hosted on Google Drive; public architecture artifacts are not yet linked.')
+print('Static checks passed. See MODERNIZATION.md for current browser validation and limitations.')

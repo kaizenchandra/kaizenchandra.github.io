@@ -1,3 +1,5 @@
+> Historical report: this describes the version before modernization. See [MODERNIZATION.md](MODERNIZATION.md) for current checks and limitations.
+
 # Portfolio validation
 
 Validation date: 7 September 2026. Browser: installed Google Chrome, isolated sessions through chrome-devtools CLI. Temporary validation tools are external to the website; no npm dependency or runtime is required by the site.
