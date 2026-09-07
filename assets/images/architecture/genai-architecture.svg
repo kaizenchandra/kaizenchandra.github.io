@@ -1,0 +1,245 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="560"
+  height="880"
+  viewBox="0 0 560 880"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">Generative AI conceptual architecture</title>
+  <desc id="desc">
+    A learning reference: application, orchestration, retrieval and tools,
+    model, guardrails, and observability.
+  </desc>
+  <defs>
+    <marker
+      id="arrow"
+      markerWidth="8"
+      markerHeight="8"
+      refX="6"
+      refY="3"
+      orient="auto"
+    >
+      <path d="M0 0 6 3 0 6" fill="none" stroke="#91b9dd" stroke-width="1.4" />
+    </marker>
+  </defs>
+  <rect
+    x="20"
+    y="10"
+    width="520"
+    height="100"
+    rx="8"
+    fill="#1a3047"
+    stroke="#4b6580"
+  />
+  <text
+    x="280.0"
+    y="60.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="24"
+    fill="#eef5fc"
+  >
+    User / AI application
+  </text>
+  <text
+    x="280.0"
+    y="88.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="20"
+    fill="#bcd0e3"
+  >
+    AI experience
+  </text>
+  <path
+    d="M280 110 L280 138"
+    fill="none"
+    stroke="#91b9dd"
+    stroke-width="1.5"
+    marker-end="url(#arrow)"
+  />
+  <rect
+    x="20"
+    y="145"
+    width="520"
+    height="100"
+    rx="8"
+    fill="#213e58"
+    stroke="#82b2df"
+  />
+  <text
+    x="280.0"
+    y="195.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="24"
+    fill="#eef5fc"
+  >
+    Prompt + agent orchestration
+  </text>
+  <text
+    x="280.0"
+    y="223.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="20"
+    fill="#bcd0e3"
+  >
+    Spring AI · LangChain · LangGraph
+  </text>
+  <path
+    d="M280 245 L280 273"
+    fill="none"
+    stroke="#91b9dd"
+    stroke-width="1.5"
+    marker-end="url(#arrow)"
+  />
+  <rect
+    x="20"
+    y="280"
+    width="520"
+    height="100"
+    rx="8"
+    fill="#1a3047"
+    stroke="#4b6580"
+  />
+  <text
+    x="280.0"
+    y="330.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="24"
+    fill="#eef5fc"
+  >
+    RAG · Tools · MCP
+  </text>
+  <text
+    x="280.0"
+    y="358.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="20"
+    fill="#bcd0e3"
+  >
+    Context and tool boundaries
+  </text>
+  <path
+    d="M280 380 L280 408"
+    fill="none"
+    stroke="#91b9dd"
+    stroke-width="1.5"
+    marker-end="url(#arrow)"
+  />
+  <rect
+    x="20"
+    y="415"
+    width="520"
+    height="100"
+    rx="8"
+    fill="#1a3047"
+    stroke="#4b6580"
+  />
+  <text
+    x="280.0"
+    y="465.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="24"
+    fill="#eef5fc"
+  >
+    Vector search · Enterprise APIs
+  </text>
+  <text
+    x="280.0"
+    y="493.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="20"
+    fill="#bcd0e3"
+  >
+    Embeddings · Pinecone · Tool servers
+  </text>
+  <path
+    d="M280 515 L280 543"
+    fill="none"
+    stroke="#91b9dd"
+    stroke-width="1.5"
+    marker-end="url(#arrow)"
+  />
+  <rect
+    x="20"
+    y="550"
+    width="520"
+    height="100"
+    rx="8"
+    fill="#213e58"
+    stroke="#82b2df"
+  />
+  <text
+    x="280.0"
+    y="600.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="24"
+    fill="#eef5fc"
+  >
+    LLM / Model provider
+  </text>
+  <text
+    x="280.0"
+    y="628.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="20"
+    fill="#bcd0e3"
+  >
+    Context-aware generation
+  </text>
+  <path
+    d="M280 650 L280 678"
+    fill="none"
+    stroke="#91b9dd"
+    stroke-width="1.5"
+    marker-end="url(#arrow)"
+  />
+  <rect
+    x="20"
+    y="685"
+    width="520"
+    height="100"
+    rx="8"
+    fill="#1a3047"
+    stroke="#4b6580"
+  />
+  <text
+    x="280.0"
+    y="735.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="24"
+    fill="#eef5fc"
+  >
+    Guardrails + observability
+  </text>
+  <text
+    x="280.0"
+    y="763.0"
+    text-anchor="middle"
+    font-family="system-ui,sans-serif"
+    font-size="20"
+    fill="#bcd0e3"
+  >
+    Policy checks · LangSmith
+  </text>
+  <text
+    x="280"
+    y="840"
+    text-anchor="middle"
+    font-family="monospace"
+    font-size="17"
+    fill="#bcd0e3"
+  >
+    CONCEPTUAL MODEL / DEVELOPING FOCUS
+  </text>
+</svg>

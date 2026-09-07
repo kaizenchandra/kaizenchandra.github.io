@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+# Replace this example with the final public URL before deployment.
+Sitemap: https://USERNAME.github.io/portfolio/sitemap.xml

@@ -1,0 +1,33 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="1200"
+  height="630"
+  viewBox="0 0 1200 630"
+>
+  <rect width="1200" height="630" fill="#14263b" />
+  <path d="M80 85H1120M80 545H1120" stroke="#435b75" />
+  <text
+    x="80"
+    y="145"
+    font-family="monospace"
+    font-size="19"
+    letter-spacing="3"
+    fill="#91beff"
+  >
+    ENGINEERING SYSTEMS. SHAPING ARCHITECTURE.
+  </text>
+  <g fill="#edf3fa" font-family="system-ui,sans-serif">
+    <text x="76" y="260" font-size="62" font-weight="650">Chandrashekhar</text>
+    <text x="76" y="340" font-size="62" font-weight="650">
+      Vishwakarma
+      <tspan fill="#91beff">.</tspan>
+    </text>
+    <text x="80" y="415" font-size="30">Java / Go · Solution Architecture</text>
+    <text x="80" y="475" fill="#bdcde0" font-size="24">
+      Distributed Systems · AWS / GCP · Generative AI
+    </text>
+    <text x="80" y="588" fill="#bdcde0" font-size="18">
+      10+ years of enterprise engineering &amp; architecture
+    </text>
+  </g>
+</svg>
