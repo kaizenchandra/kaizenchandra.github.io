@@ -1,12 +1,12 @@
 {
   "name": "Chandrashekhar Vishwakarma | Engineering & Architecture",
   "short_name": "CV Portfolio",
-  "description": "Java / Go and Solution Architecture portfolio",
+  "description": "Lead Software Engineer and Technology Architect portfolio",
   "start_url": "./",
   "scope": "./",
   "display": "browser",
-  "background_color": "#f8f9fb",
-  "theme_color": "#192b40",
+  "background_color": "#f7f8fc",
+  "theme_color": "#3e3bc5",
   "icons": [
     {
       "src": "assets/images/favicon.svg",

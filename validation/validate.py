@@ -59,9 +59,17 @@ ET.parse(ROOT/'sitemap.xml')
 manifest=json.loads((ROOT/'site.webmanifest').read_text())
 for icon in manifest['icons']: assert (ROOT/icon['src']).is_file()
 source=(ROOT/'index.html').read_text()
-for required in ['Publicis Sapient','HTC Global Services','Siemens','Cyber Infrastructure','Skyway Technocom','2015–2017','code.chandrashekhar@gmail.com','+91-9691714192','+91-9109250699']:
+for required in [
+    'Lead Software Engineer &amp;', 'Technology Architect',
+    'Publicis Sapient', 'Manager Technology', 'Feb 2026–Present',
+    'HTC Global Services', 'Technical Lead', 'Jul 2024–Nov 2025',
+    'Siemens', 'Senior Software Development Engineer', 'Sep 2020–Jun 2024',
+    'Cyber Infrastructure (CIS)', 'Senior Software Engineer', 'Aug 2018–Jul 2020',
+    '>STC<', 'Jun 2015–Jul 2018',
+    'mailto:code.chandrashekhar@hotmail.com',
+    'tel:+919691714192', 'tel:+919109250699',
+]:
     assert required in source, f'Missing required fact: {required}'
 assert (ROOT/'assets/images/og-cover.png').is_file()
 print('PASS SVG/XML, manifest, required profile facts, social PNG')
-print('Publication note: resume is hosted on Google Drive; public architecture artifacts are not yet linked.')
-print('Static checks passed. See MODERNIZATION.md for current browser validation and limitations.')
+print('Static checks passed. External link availability is checked separately.')
