@@ -1,32 +1,36 @@
 <div class="lab-page">
-  <header class="lab-masthead">
-    <h1 class="kinetic-title">Engineering lab</h1>
-    <p>Edit and run two JavaScript examples to see how services handle duplicate events and recover from transient failures.</p>
-  </header>
+    <header class="lab-masthead">
+        <h1 class="kinetic-title">Engineering lab</h1>
+        <p>Edit and run two JavaScript examples to see how services handle duplicate events and recover from transient
+            failures.</p>
+    </header>
 
-  <div class="lab-layout">
-    <div class="lab-sidebar">
-      <h2 id="lab-examples-title">Examples</h2>
-      <nav class="lab-navigation" aria-labelledby="lab-examples-title">
-        <a href="#idempotency" data-lab-example>
-          <strong>Idempotent processing</strong>
-          <span>Skip duplicate events</span>
-        </a>
-        <a href="#backoff" data-lab-example>
-          <strong>Exponential backoff</strong>
-          <span>Delay and retry failures</span>
-        </a>
-      </nav>
-      <a class="text-link lab-terminal-link" href="#terminal-title" data-terminal-link hidden>Jump to terminal <span aria-hidden="true">↓</span></a>
-    </div>
+    <div class="lab-layout">
+        <div class="lab-sidebar">
+            <h2 id="lab-examples-title">Examples</h2>
+            <nav aria-labelledby="lab-examples-title" class="lab-navigation">
+                <a data-lab-example href="#idempotency">
+                    <strong>Idempotent processing</strong>
+                    <span>Skip duplicate events</span>
+                </a>
+                <a data-lab-example href="#backoff">
+                    <strong>Exponential backoff</strong>
+                    <span>Delay and retry failures</span>
+                </a>
+            </nav>
+            <a class="text-link lab-terminal-link" data-terminal-link hidden href="#terminal-title">Jump to terminal
+                <span aria-hidden="true">↓</span></a>
+        </div>
 
-    <div class="lab-workspace">
-      <article id="idempotency" class="lab-example" aria-labelledby="idempotency-title">
-        <header class="lab-example-header">
-          <h2 id="idempotency-title">Idempotent event processing</h2>
-          <p>Deliver an event twice and check that the duplicate leaves the balance unchanged. Try giving the last event a new ID and run the code again.</p>
-        </header>
-        <pre class="sample-source" tabindex="0" aria-label="JavaScript source for idempotent event processing"><code>const events = [
+        <div class="lab-workspace">
+            <article aria-labelledby="idempotency-title" class="lab-example" id="idempotency">
+                <header class="lab-example-header">
+                    <h2 id="idempotency-title">Idempotent event processing</h2>
+                    <p>Deliver an event twice and check that the duplicate leaves the balance unchanged. Try giving the
+                        last event a new ID and run the code again.</p>
+                </header>
+                <pre aria-label="JavaScript source for idempotent event processing" class="sample-source"
+                     tabindex="0"><code>const events = [
   { id: "deposit-1", amount: 70 },
   { id: "deposit-2", amount: 30 },
   { id: "deposit-1", amount: 70 },
@@ -47,14 +51,15 @@ for (const event of events) {
 }
 
 console.log("Final balance:", balance);</code></pre>
-      </article>
+            </article>
 
-      <article id="backoff" class="lab-example" aria-labelledby="backoff-title">
-        <header class="lab-example-header">
-          <h2 id="backoff-title">Exponential backoff</h2>
-          <p>See how the delay grows after each failure. Change <code>transientFailures</code> to test what happens when the retry budget runs out.</p>
-        </header>
-        <pre class="sample-source" tabindex="0" aria-label="JavaScript source for exponential backoff"><code>const transientFailures = 2;
+            <article aria-labelledby="backoff-title" class="lab-example" id="backoff">
+                <header class="lab-example-header">
+                    <h2 id="backoff-title">Exponential backoff</h2>
+                    <p>See how the delay grows after each failure. Change <code>transientFailures</code> to test what
+                        happens when the retry budget runs out.</p>
+                </header>
+                <pre aria-label="JavaScript source for exponential backoff" class="sample-source" tabindex="0"><code>const transientFailures = 2;
 const maxAttempts = 4;
 const initialDelayMs = 100;
 let delivered = false;
@@ -74,30 +79,31 @@ for (let attempt = 1; attempt &lt;= maxAttempts; attempt++) {
 }
 
 if (!delivered) console.log("Retry budget exhausted.");</code></pre>
-      </article>
+            </article>
 
-      <section class="terminal" aria-labelledby="terminal-title" hidden>
-        <div class="terminal-header">
-          <div>
-            <h2 id="terminal-title">Portfolio terminal</h2>
-            <p>Run a command to find a section of the portfolio.</p>
-          </div>
-          <div class="terminal-commands" role="group" aria-label="Suggested commands">
-            <button type="button" data-command="help">help</button>
-            <button type="button" data-command="projects">projects</button>
-            <button type="button" data-command="skills">skills</button>
-            <button type="button" data-command="contact">contact</button>
-          </div>
+            <section aria-labelledby="terminal-title" class="terminal" hidden>
+                <div class="terminal-header">
+                    <div>
+                        <h2 id="terminal-title">Portfolio terminal</h2>
+                        <p>Run a command to find a section of the portfolio.</p>
+                    </div>
+                    <div aria-label="Suggested commands" class="terminal-commands" role="group">
+                        <button data-command="help" type="button">help</button>
+                        <button data-command="projects" type="button">projects</button>
+                        <button data-command="skills" type="button">skills</button>
+                        <button data-command="contact" type="button">contact</button>
+                    </div>
+                </div>
+                <form>
+                    <label for="terminal-command">Command</label>
+                    <input autocapitalize="off" autocomplete="off" id="terminal-command" maxlength="32" name="command"
+                           required spellcheck="false" type="text"/>
+                    <button class="button button-primary" type="submit">Run command</button>
+                </form>
+                <div class="terminal-output" role="status"></div>
+            </section>
         </div>
-        <form>
-          <label for="terminal-command">Command</label>
-          <input id="terminal-command" name="command" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="32" required />
-          <button class="button button-primary" type="submit">Run command</button>
-        </form>
-        <div class="terminal-output" role="status"></div>
-      </section>
     </div>
-  </div>
-  <div class="copy-toast" role="status" aria-atomic="true" data-lab-toast></div>
+    <div aria-atomic="true" class="copy-toast" data-lab-toast role="status"></div>
 </div>
-<script src="../assets/js/lab.js" defer></script>
+<script defer src="../assets/js/lab.js"></script>

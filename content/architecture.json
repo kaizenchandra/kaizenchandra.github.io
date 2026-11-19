@@ -1,0 +1,420 @@
+{
+  "title": "Cloud-native event-driven microservices platform",
+  "description": "A conceptual order platform with five views covering system context, service boundaries, event delivery, Kubernetes operations, and infrastructure provisioning.",
+  "views": [
+    {
+      "id": "context",
+      "tab": "System context",
+      "title": "System context",
+      "kind": "C4 system context",
+      "summary": "A shopper places an order from a web or mobile client. The order platform authenticates the request, coordinates payment through an external provider, and sends updates through a notification provider.",
+      "flows": [
+        {
+          "name": "Order and customer updates",
+          "nodes": [
+            "Shopper",
+            "Order platform",
+            "Payment provider"
+          ],
+          "edges": [
+            [
+              "http",
+              "HTTPS via web or mobile"
+            ],
+            [
+              "http",
+              "Payment API"
+            ]
+          ]
+        },
+        {
+          "name": "Outbound notification",
+          "nodes": [
+            "Order platform",
+            "Notification provider",
+            "Shopper"
+          ],
+          "edges": [
+            [
+              "http",
+              "Provider API"
+            ],
+            [
+              "delivery",
+              "Email or push delivery"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        [
+          "Entry point",
+          "A cloud load balancer or API gateway accepts HTTPS traffic. An ingress controller routes requests to Kubernetes Services inside the platform boundary."
+        ],
+        [
+          "Availability",
+          "Distribute replicas across failure domains and choose managed data services with recovery objectives that fit the system. A redundant API tier still depends on the datastore and external providers."
+        ],
+        [
+          "Network boundaries",
+          "Keep workloads and managed data endpoints on private network paths where possible. Restrict provider egress and rehearse failover and restore procedures against the required recovery time and data loss limits."
+        ]
+      ]
+    },
+    {
+      "id": "services",
+      "tab": "Service boundaries",
+      "title": "Microservices and data ownership",
+      "kind": "C4 container view",
+      "summary": "Java and Spring Boot services own distinct business capabilities. Each service can deploy independently and owns its writes. Shared hosting can still use separate credentials and logical databases.",
+      "flows": [
+        {
+          "name": "Order request",
+          "nodes": [
+            "API gateway",
+            "Kubernetes ingress",
+            "Order service",
+            "Order PostgreSQL"
+          ],
+          "stores": [
+            "Order PostgreSQL"
+          ],
+          "edges": [
+            [
+              "http",
+              "HTTPS"
+            ],
+            [
+              "http",
+              "HTTP via a Service"
+            ],
+            [
+              "data",
+              "Local transaction"
+            ]
+          ]
+        },
+        {
+          "name": "Identity boundary",
+          "nodes": [
+            "API gateway",
+            "Identity service",
+            "Identity store"
+          ],
+          "stores": [
+            "Identity store"
+          ],
+          "edges": [
+            [
+              "http",
+              "OIDC discovery or token flow"
+            ],
+            [
+              "data",
+              "Service-owned data"
+            ]
+          ]
+        },
+        {
+          "name": "Background work",
+          "nodes": [
+            "Order service",
+            "Kafka",
+            "Payment and notification services"
+          ],
+          "edges": [
+            [
+              "event",
+              "Order events via outbox"
+            ],
+            [
+              "event",
+              "Independent subscriptions"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        [
+          "Domain ownership",
+          "Order owns order state, Payment owns payment attempts, Notification owns delivery records, and Identity owns identity concerns. A bounded context defines its terms and invariants before it becomes a deployment boundary."
+        ],
+        [
+          "REST or messaging",
+          "Use synchronous calls when the caller needs an immediate answer. Use events for background work when consumers can tolerate delayed updates. HTTP contracts need versioning as callers evolve, and timeouts bound the effect of downstream delays."
+        ],
+        [
+          "Data and failure isolation",
+          "Use local transactions and design cross-service changes for eventual consistency. For example, a failed payment can trigger an order cancellation through a saga. Redis can cache read models with explicit expiry and invalidation while PostgreSQL remains the source of truth."
+        ]
+      ]
+    },
+    {
+      "id": "events",
+      "tab": "Event flow",
+      "title": "Publishing and consuming an order event",
+      "kind": "Event flow",
+      "summary": "The order write and its outbox record commit in one database transaction. A relay publishes the outbox record to Kafka. A Payment consumer processes the order event, then emits a payment outcome that a Notification consumer handles independently.",
+      "flows": [
+        {
+          "name": "Order transaction and publication",
+          "nodes": [
+            "Order service",
+            "PostgreSQL outbox",
+            "Outbox relay",
+            "Kafka order topic"
+          ],
+          "stores": [
+            "PostgreSQL outbox"
+          ],
+          "edges": [
+            [
+              "data",
+              "State and event commit"
+            ],
+            [
+              "data",
+              "Read unpublished events"
+            ],
+            [
+              "event",
+              "Publish OrderPlaced"
+            ]
+          ]
+        },
+        {
+          "name": "Payment and notification",
+          "nodes": [
+            "Kafka order topic",
+            "Payment consumer",
+            "Kafka payment topic",
+            "Notification consumer"
+          ],
+          "edges": [
+            [
+              "event",
+              "OrderPlaced"
+            ],
+            [
+              "event",
+              "PaymentCompleted via outbox"
+            ],
+            [
+              "event",
+              "PaymentCompleted"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        [
+          "Ordering and parallelism",
+          "Key order events by order ID to preserve their order within a topic partition. Consumer groups share partitions, while separate groups advance independently. Ordering across partitions or topics requires explicit business handling."
+        ],
+        [
+          "Duplicate delivery",
+          "At-least-once processing can redeliver an event after a crash, and the outbox relay can publish twice. Persist processed IDs with local side effects where possible, and commit offsets after durable processing. An external payment still needs a provider idempotency key or reconciliation when the result is uncertain."
+        ],
+        [
+          "Retry and replay",
+          "Bound retry attempts with backoff and route exhausted or invalid events to a dead-letter topic for investigation. Moving a failed event to a retry topic can let later events overtake it. Plan schema compatibility and deduplication retention before replay."
+        ]
+      ],
+      "references": [
+        {
+          "label": "Apache Kafka delivery semantics",
+          "url": "https://kafka.apache.org/43/design/design/#message-delivery-semantics"
+        }
+      ]
+    },
+    {
+      "id": "deployment",
+      "tab": "Kubernetes",
+      "title": "Kubernetes deployment and runtime",
+      "kind": "Deployment view",
+      "summary": "An ingress controller and Services route traffic to healthy Pods. Deployments manage replica sets and rolling changes. A registry supplies versioned Docker images for the workloads.",
+      "flows": [
+        {
+          "name": "Request path into the cluster",
+          "nodes": [
+            "Cloud load balancer",
+            "Ingress controller",
+            "Kubernetes Service",
+            "Ready application Pods"
+          ],
+          "edges": [
+            [
+              "http",
+              "HTTPS"
+            ],
+            [
+              "http",
+              "Host and path routing"
+            ],
+            [
+              "http",
+              "Routes to ready endpoints"
+            ]
+          ]
+        },
+        {
+          "name": "Workload lifecycle",
+          "nodes": [
+            "Container registry",
+            "Node container runtime",
+            "Deployment-managed Pods"
+          ],
+          "edges": [
+            [
+              "delivery",
+              "Pull image by digest"
+            ],
+            [
+              "delivery",
+              "Start declared containers"
+            ]
+          ]
+        },
+        {
+          "name": "Runtime dependencies",
+          "nodes": [
+            "Application Pods",
+            "Managed PostgreSQL, Redis and Kafka"
+          ],
+          "edges": [
+            [
+              "data",
+              "Private network and TLS"
+            ]
+          ]
+        },
+        {
+          "name": "Observability",
+          "nodes": [
+            "Ingress and Pods",
+            "Telemetry collectors",
+            "Monitoring and alerting"
+          ],
+          "edges": [
+            [
+              "data",
+              "Logs, metrics and traces"
+            ],
+            [
+              "data",
+              "Export and correlate"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        [
+          "Configuration and identity",
+          "Use ConfigMaps for non-sensitive configuration. Scope Secrets and service-account access with RBAC and limit traffic with network policies. Decide whether state belongs in managed services or persistent volumes when setting recovery and portability requirements."
+        ],
+        [
+          "Health and scale",
+          "Use readiness probes to remove unready endpoints and liveness probes for stuck processes. Resource requests guide scheduling and CPU-based scaling. Limits constrain usage, and an HPA can scale from resource or workload metrics such as consumer lag."
+        ],
+        [
+          "Rolling deployment",
+          "Set rollout capacity and disruption budgets with replica count and availability goals in mind. Observe readiness and errors during promotion. Revert a failed release to a known version, with an explicit plan for migration compatibility."
+        ]
+      ],
+      "references": [
+        {
+          "label": "Kubernetes Deployment documentation",
+          "url": "https://kubernetes.io/docs/concepts/workloads/controllers/deployment/"
+        }
+      ]
+    },
+    {
+      "id": "delivery",
+      "tab": "CI/CD and IaC",
+      "title": "Application delivery and infrastructure provisioning",
+      "kind": "Pipeline and infrastructure view",
+      "summary": "Application and infrastructure pipelines have different lifecycles. Docker packages the application, a registry stores the image, Helm manages its Kubernetes release, and Terraform manages cloud resources.",
+      "flows": [
+        {
+          "name": "Application pipeline",
+          "nodes": [
+            "Application repository",
+            "CI build and test",
+            "Docker image and registry",
+            "Helm release",
+            "Kubernetes workloads"
+          ],
+          "edges": [
+            [
+              "delivery",
+              "Commit starts CI"
+            ],
+            [
+              "delivery",
+              "Build, scan and publish"
+            ],
+            [
+              "delivery",
+              "Promote image digest"
+            ],
+            [
+              "delivery",
+              "Render and release"
+            ]
+          ]
+        },
+        {
+          "name": "Infrastructure pipeline",
+          "nodes": [
+            "Infrastructure repository",
+            "CI and Terraform plan",
+            "Approval and apply",
+            "Cloud network, cluster and managed services"
+          ],
+          "edges": [
+            [
+              "delivery",
+              "Validate modules and inputs"
+            ],
+            [
+              "delivery",
+              "Review saved plan"
+            ],
+            [
+              "delivery",
+              "Provision with providers"
+            ]
+          ]
+        }
+      ],
+      "notes": [
+        [
+          "Docker and the registry",
+          "Build in stages and copy only runtime artifacts into the final image. Scan and promote the same immutable digest between environments. Runtime configuration and credentials arrive at deployment time."
+        ],
+        [
+          "Helm and Kubernetes",
+          "Keep workload templates and defaults in a versioned chart with environment-specific values supplied during release. Helm tracks the release revision. Kubernetes reconciles the workload, and deployment automation watches health and decides whether to roll back."
+        ],
+        [
+          "Terraform",
+          "Providers manage APIs for cloud resources. Modules, environment-specific variables, and outputs describe reusable infrastructure and dependencies. Use isolated remote state, locking where supported, and a reviewed plan before applying. Application release automation can evolve independently of cluster provisioning."
+        ]
+      ],
+      "references": [
+        {
+          "label": "Docker multi-stage builds",
+          "url": "https://docs.docker.com/build/building/multi-stage/"
+        },
+        {
+          "label": "Helm charts",
+          "url": "https://helm.sh/docs/topics/charts/"
+        },
+        {
+          "label": "Terraform plan",
+          "url": "https://developer.hashicorp.com/terraform/cli/commands/plan"
+        }
+      ]
+    }
+  ]
+}

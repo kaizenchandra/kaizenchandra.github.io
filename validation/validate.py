@@ -14,6 +14,7 @@ class Document(HTMLParser):
     def __init__(self, source):
         super().__init__(convert_charrefs=True)
         self.ids, self.links, self.headings, self.images, self.scripts = [], [], [], [], []
+        self.theme_buttons = []
         self.json_data = []
         self.in_json = False
         self.feed(source)
@@ -25,6 +26,10 @@ class Document(HTMLParser):
             if url is not None: self.links.append(url)
         if tag.startswith('h') and len(tag) == 2 and tag[1].isdigit(): self.headings.append(int(tag[1]))
         if tag == 'img': self.images.append(a)
+        if 'data-theme-toggle' in a:
+            assert tag == 'button', 'Theme control must be a button'
+            self.theme_buttons.append(a)
+        assert 'data-theme-control' not in a, 'Obsolete theme selector'
         if tag == 'script' and a.get('type') == 'application/ld+json': self.in_json = True
         if tag == 'a':
             assert a.get('href', '').strip(), 'Empty anchor'
@@ -34,9 +39,16 @@ class Document(HTMLParser):
     def handle_endtag(self, tag):
         if tag == 'script': self.in_json = False
 
+indexable = set()
 for path in sorted(ROOT.rglob('*.html')):
-    doc = Document(path.read_text())
+    source = path.read_text()
+    doc = Document(source)
     assert doc.headings.count(1) == 1, f'{path}: one H1 required'
+    assert len(doc.theme_buttons) == 1, f'{path}: expected one theme button'
+    theme_button = doc.theme_buttons[0]
+    assert theme_button.get('type') == 'button' and theme_button.get('aria-label'), f'{path}: unnamed theme button'
+    if path.name == 'index.html' and 'content="noindex"' not in source:
+        indexable.add(path)
     assert not [i for i,n in Counter(doc.ids).items() if n > 1], 'Duplicate IDs'
     for prev,nxt in zip(doc.headings,doc.headings[1:]): assert nxt <= prev+1, 'Skipped heading level'
     for image in doc.images:
@@ -64,11 +76,15 @@ for path in sorted(ROOT.rglob('*.html')):
 for path in (ROOT/'assets/images').rglob('*.svg'): ET.parse(path)
 namespace = {'map': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
 sitemap = ET.parse(ROOT/'sitemap.xml')
+indexed_pages = set()
 for entry in sitemap.findall('map:url/map:loc', namespace):
     assert entry.text.startswith('https://kaizenchandra.github.io/')
     indexed = ROOT / urlsplit(entry.text).path.lstrip('/') / 'index.html'
     assert indexed.is_file(), f'Missing sitemap route: {entry.text}'
     assert 'content="noindex"' not in indexed.read_text(), f'Private sitemap route: {entry.text}'
+    assert indexed not in indexed_pages, f'Duplicate sitemap route: {entry.text}'
+    indexed_pages.add(indexed)
+assert indexed_pages == indexable, f'Missing sitemap pages: {indexable - indexed_pages}'
 assert (ROOT/'resume/chandrashekhar-vishwakarma.pdf').read_bytes().startswith(b'%PDF-')
 manifest=json.loads((ROOT/'site.webmanifest').read_text())
 for icon in manifest['icons']: assert (ROOT/icon['src']).is_file()

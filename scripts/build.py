@@ -11,16 +11,20 @@ from urllib.parse import urlsplit
 from xml.etree import ElementTree as ET
 
 from markdown_it import MarkdownIt
+from markdown_it.token import Token
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name, TextLexer
 from pygments.util import ClassNotFound
+
+from architecture import flow, reference_page
 
 ROOT = Path(__file__).resolve().parents[1]
 SITE = "https://kaizenchandra.github.io/"
 NAME = "Chandrashekhar Vishwakarma"
 COVER = SITE + "assets/images/og-cover.png"
 MARKER = ".portfolio-build"
+THEME_SCRIPT = re.compile(r'<script src="(?:\.\./|/)*assets/js/theme\.js"( data-nav-bootstrap)?></script>')
 
 
 def highlight_code(code, language, _attrs):
@@ -55,7 +59,7 @@ def page(title, description, route, depth, content, schema_type, draft=False):
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{escape(title)} | {NAME}</title>
   <meta name="description" content="{escape(description)}">
-  <meta name="theme-color" content="#f7f8fc">
+  <meta name="theme-color" content="#f8fafc">
   {robots}
   {canonical}
   <meta property="og:type" content="{'article' if schema_type in {'Article', 'BlogPosting'} else 'website'}">
@@ -69,7 +73,7 @@ def page(title, description, route, depth, content, schema_type, draft=False):
   <script src="{prefix}assets/js/theme.js"></script>
   <link rel="stylesheet" href="{prefix}assets/css/styles.css">
   <link rel="stylesheet" href="{prefix}assets/css/interactive.css">
-  <script src="{prefix}assets/js/main.js" defer></script>
+  <link rel="stylesheet" href="{prefix}assets/css/portfolio.css">
   <script src="{prefix}assets/js/interactive.js" defer></script>
   <script type="application/ld+json">{schema}</script>
 </head>
@@ -79,11 +83,12 @@ def page(title, description, route, depth, content, schema_type, draft=False):
     <div class="container reading-header">
       <a class="brand" href="{prefix}index.html" aria-label="CV — {NAME}, home">CV</a>
       <nav aria-label="Portfolio">
-        <a href="{prefix}index.html#projects">Work</a>
-        <a href="{prefix}blog/index.html">Blog</a>
+        <a href="{prefix}index.html#projects">Projects</a>
+        <a href="{prefix}architecture/index.html"{' aria-current="page"' if route == 'architecture/' else ''}>Architecture</a>
+        <a href="{prefix}blog/index.html"{' aria-current="page"' if route == 'blog/' else ''}>Blog</a>
         <a href="{prefix}lab/index.html"{' aria-current="page"' if route == 'lab/' else ''}>Lab</a>
       </nav>
-      <button class="icon-button theme-toggle" type="button" aria-label="Switch color theme" hidden>◐</button>
+      <button class="icon-button theme-toggle" type="button" data-theme-toggle aria-label="Switch to dark mode" hidden></button>
     </div>
     <div class="reading-progress" data-reading-progress aria-hidden="true" hidden><span></span></div>
   </header>
@@ -127,19 +132,84 @@ def evidence(data):
     return "\n".join(groups)
 
 
+def project_page(item, source):
+    escape = html.escape
+    tokens = MARKDOWN.parse(source)
+    outline = []
+    for token, heading in zip(tokens, tokens[1:]):
+        if token.type != "heading_open" or token.tag != "h2":
+            continue
+        identifier = f"section-{len(outline) + 1}"
+        token.attrSet("id", identifier)
+        outline.append(f'<li><a href="#{identifier}">{escape(heading.content)}</a></li>')
+    name = escape(item["title"])
+    project = escape(item.get("project", ""))
+    back = f"../../index.html#project-{project}" if project else "../../index.html#projects"
+    technologies = "".join(f"<li>{escape(technology)}</li>" for technology in item["technologies"])
+    links = [
+        f'<a class="text-link" href="{escape(link["url"])}">{escape(link["label"])} <span aria-hidden="true">↗</span></a>'
+        for link in item.get("links", [])
+    ]
+    links.append(f'<a class="text-link" href="../../index.html#role-{escape(item["experience"])}">Related work experience</a>')
+
+    diagram = ""
+    if model := item.get("diagram"):
+        diagram = f"""
+        <h2 id="documented-architecture">Documented architecture</h2>
+        <figure class="case-diagram">
+          <figcaption><span class="evidence-label">Implemented · portfolio documentation</span>
+            <p>{escape(model["caption"])}</p>
+          </figcaption>
+          <div class="flow-canvas">{flow(model)}</div>
+        </figure>"""
+    if diagram:
+        # Place the documented flow after the problem without changing section IDs.
+        diagram_at = next((i for i, token in enumerate(tokens) if token.attrGet("id") == "section-2"), len(tokens))
+        outline.insert(1, '<li><a href="#documented-architecture">Documented architecture</a></li>')
+        tokens.insert(diagram_at, Token("html_block", "", 0, content=diagram))
+    body = MARKDOWN.renderer.render(tokens, MARKDOWN.options, {})
+
+    return f"""
+    <a class="text-link back-link" href="{back}">← Project gallery</a>
+    <header class="article-header case-masthead">
+      <p class="eyebrow">{escape(item["organization"])}</p>
+      <h1>{name}</h1>
+      <p class="lead">{escape(item["description"])}</p>
+      <ul class="tags" role="list" aria-label="Documented engineering areas">{technologies}</ul>
+      <nav class="case-evidence" aria-label="Evidence and related work">
+        {"".join(links)}
+      </nav>
+    </header>
+    <div class="case-layout">
+      <aside class="case-sidebar">
+        <nav aria-label="Case study sections">
+          <p class="case-sidebar-label">On this page</p>
+          <ul role="list">{"".join(outline)}</ul>
+        </nav>
+      </aside>
+      <article class="prose case-prose" data-reading-article>
+        {body}
+      </article>
+    </div>"""
+
+
 def build(dest, drafts, contact_endpoint):
     escape = html.escape
     data = json.loads((ROOT / "content/portfolio.json").read_text(encoding="utf-8"))
     for directory in ("assets", "resume"):
         shutil.copytree(ROOT / directory, dest / directory)
-    for filename in ("404.html", "robots.txt", "site.webmanifest"):
+    for filename in ("robots.txt", "site.webmanifest"):
         shutil.copy2(ROOT / filename, dest / filename)
+    shutil.copy2(ROOT / "404.html", dest / "404.html")
     home = (ROOT / "index.html").read_text(encoding="utf-8")
     home = home.replace('data-endpoint=""', f'data-endpoint="{escape(contact_endpoint)}"')
     home = home.replace("<!-- Approved evidence -->", evidence(data))
     (dest / "index.html").write_text(home, encoding="utf-8")
 
-    routes = ["", "resume/", "lab/", "blog/"]
+    title, description, architecture = reference_page()
+    write_page(dest, "architecture/", page(title, description, "architecture/", 1, architecture, "WebPage"))
+
+    routes = ["", "architecture/", "resume/", "lab/", "blog/"]
     for collection, folder, schema_type in (("cases", "projects", "Article"), ("posts", "blog", "BlogPosting")):
         for item in data[collection]:
             draft = item.get("draft", False)
@@ -149,10 +219,13 @@ def build(dest, drafts, contact_endpoint):
             if not re.fullmatch(r"[a-z0-9]+(?:-[a-z0-9]+)*", slug):
                 raise ValueError(f"Invalid content slug: {slug}")
             route = f"{folder}/{slug}/"
-            body = MARKDOWN.render((ROOT / "content" / collection / f"{slug}.md").read_text(encoding="utf-8"))
-            label = escape(item.get("organization", "Draft for review" if draft else "Technical writing"))
-            back = "../../index.html#projects" if collection == "cases" else "../index.html"
-            text = f"""    <a class="text-link back-link" href="{back}">← {'Selected work' if collection == 'cases' else 'Blog'}</a>
+            source = (ROOT / "content" / collection / f"{slug}.md").read_text(encoding="utf-8")
+            if collection == "cases":
+                text = project_page(item, source)
+            else:
+                body = MARKDOWN.render(source)
+                label = escape(item.get("organization", "Draft for review" if draft else "Technical writing"))
+                text = f"""    <a class="text-link back-link" href="../index.html">← Blog</a>
     <article class="prose" data-reading-article>
       <header class="article-header">
         <p class="eyebrow">{label}</p>
@@ -179,6 +252,11 @@ def build(dest, drafts, contact_endpoint):
 
     lab = (ROOT / "lab/index.html").read_text(encoding="utf-8")
     write_page(dest, "lab/", page("Engineering lab", "Try executable examples of idempotency and exponential backoff.", "lab/", 1, lab, "WebPage"))
+    theme_script = (ROOT / "assets/js/theme.js").read_text(encoding="utf-8")
+    for path in dest.rglob("*.html"):
+        source = path.read_text(encoding="utf-8")
+        source = THEME_SCRIPT.sub(lambda match: f'<script{match[1] or ""}>{theme_script}</script>', source)
+        path.write_text(source, encoding="utf-8")
     namespace = "http://www.sitemaps.org/schemas/sitemap/0.9"
     ET.register_namespace("", namespace)
     sitemap = ET.Element(f"{{{namespace}}}urlset")

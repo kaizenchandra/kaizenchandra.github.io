@@ -4,31 +4,196 @@
       "slug": "distributed-video",
       "title": "Distributed Video Platform",
       "organization": "Tesco · Publicis Sapient",
-      "description": "Designing service boundaries, event contracts, and failure isolation for a hybrid cloud-edge platform."
+      "description": "Designing service boundaries, event contracts, and failure isolation for a hybrid cloud-edge platform.",
+      "project": "distributed-video",
+      "experience": "publicis-sapient",
+      "technologies": [
+        "Hybrid cloud-edge",
+        "Event contracts",
+        "Multi-tenancy"
+      ],
+      "links": [
+        {
+          "label": "Video reference",
+          "url": "https://www.youtube.com/watch?v=PHsLPhX6vN4"
+        }
+      ]
     },
     {
       "slug": "document-processing",
       "title": "Document post-processing",
       "organization": "CNA Insurance · HTC Global Services",
-      "description": "Leading delivery of an asynchronous document workflow across cloud storage, messaging, and SFTP."
+      "description": "Leading delivery of an asynchronous document workflow across cloud storage, messaging, and SFTP.",
+      "project": "document-processing",
+      "experience": "htc",
+      "technologies": [
+        "SmartCOMM",
+        "Cloud Storage",
+        "Cloud Pub/Sub",
+        "SFTP"
+      ],
+      "diagram": {
+        "name": "Document-processing integrations",
+        "nodes": [
+          "SmartCOMM",
+          "Document-processing platform",
+          "Downstream systems"
+        ],
+        "edges": [
+          [
+            "data",
+            "Generated documents"
+          ],
+          [
+            "delivery",
+            "SFTP delivery"
+          ]
+        ],
+        "caption": "This view shows the documented input and delivery boundaries. The platform also integrates Cloud Storage and Cloud Pub/Sub for asynchronous processing and failure handling."
+      }
     },
     {
       "slug": "industrial-platforms",
       "title": "Industrial and energy platforms",
       "organization": "Siemens Xcelerator and Energy",
-      "description": "Building distributed backend services and implementing asynchronous integrations across AWS workloads."
+      "description": "Building distributed backend services and implementing asynchronous integrations across AWS workloads.",
+      "experience": "siemens",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Go",
+        "Kafka",
+        "RabbitMQ",
+        "AWS"
+      ]
     },
     {
       "slug": "ifc-modernization",
       "title": "IFC application modernization",
       "organization": "World Bank Group (IFC) · HTC Global Services",
-      "description": "Leading microservices modernization that improved IFC delivery efficiency by 20%."
+      "description": "Leading microservices modernization that improved IFC delivery efficiency by 20%.",
+      "project": "ifc-modernization",
+      "experience": "htc",
+      "technologies": [
+        "Microservices",
+        "REST",
+        "Contract testing",
+        "CI/CD"
+      ]
     },
     {
       "slug": "reporting-at-scale",
       "title": "Asynchronous reporting at scale",
       "organization": "Stafftravel Voyage · Cyber Infrastructure",
-      "description": "Processing millions of records and reducing timeout-related reporting failures by 25%."
+      "description": "Processing millions of records and reducing timeout-related reporting failures by 25%.",
+      "project": "reporting-at-scale",
+      "experience": "cis",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "JasperReports"
+      ],
+      "diagram": {
+        "name": "Asynchronous report generation",
+        "nodes": [
+          "Report work",
+          "Java and Spring Boot platform",
+          "JasperReports"
+        ],
+        "edges": [
+          [
+            "delivery",
+            "Asynchronous processing"
+          ],
+          [
+            "data",
+            "Report generation"
+          ]
+        ],
+        "caption": "This view shows the documented reporting responsibilities. The case study records the client attribution separately from the project gallery."
+      }
+    },
+    {
+      "slug": "industrial-asset-hub",
+      "title": "Industrial Asset Hub",
+      "organization": "Siemens Xcelerator",
+      "description": "Distributed backend services and asynchronous integrations for an industrial asset platform on AWS.",
+      "project": "industrial-asset-hub",
+      "experience": "siemens",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "Golang",
+        "Gin",
+        "Gorm",
+        "AWS"
+      ],
+      "links": [
+        {
+          "label": "Public product page",
+          "url": "https://www.siemens.com/en-us/products/industrial-asset-hub/"
+        }
+      ]
+    },
+    {
+      "slug": "icma",
+      "title": "I&C Monitors and Advisors (ICMA)",
+      "organization": "Siemens Energy",
+      "description": "Distributed backend services and asynchronous integrations for an instrumentation and controls platform.",
+      "project": "icma",
+      "experience": "siemens",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "AWS",
+        "Docker",
+        "Kubernetes"
+      ],
+      "links": [
+        {
+          "label": "Public product information",
+          "url": "https://www.siemens-energy.com/global/en/home/products-services/service/instrumentation-controls.html"
+        }
+      ]
+    },
+    {
+      "slug": "omnivise",
+      "title": "Omnivise Asset Management",
+      "organization": "Siemens Energy",
+      "description": "Backend services and asynchronous communication for an energy asset management platform.",
+      "project": "omnivise",
+      "experience": "siemens",
+      "technologies": [
+        "Java",
+        "Go",
+        "Kafka",
+        "AWS"
+      ],
+      "links": [
+        {
+          "label": "Public product information",
+          "url": "https://www.siemens-energy.com/global/en/home/products-services/service/omnivise-asset-management1.html"
+        }
+      ]
+    },
+    {
+      "slug": "application-modernization",
+      "title": "Application Modernization & Feature Development",
+      "organization": "Staff Travel Voyage · Cyber Infrastructure",
+      "description": "Delivering application improvements from business requirements through technical implementation.",
+      "project": "application-modernization",
+      "experience": "cis",
+      "technologies": [
+        "Java",
+        "Spring Boot",
+        "AWS"
+      ],
+      "links": [
+        {
+          "label": "Client website",
+          "url": "https://stafftravel.voyage/homenew"
+        }
+      ]
     }
   ],
   "posts": [
