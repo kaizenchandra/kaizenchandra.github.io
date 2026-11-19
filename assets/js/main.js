@@ -131,7 +131,7 @@
         await navigator.clipboard.writeText(address.getAttribute("href").slice("mailto:".length));
         status.textContent = "Email address copied.";
       } catch (_) {
-        status.textContent = "Select the email address to copy it, or choose Send an email.";
+        status.textContent = "Could not copy the email address. Choose Send an email to open your email app.";
       }
       timeout = setTimeout(() => { status.textContent = ""; }, 3500);
     });

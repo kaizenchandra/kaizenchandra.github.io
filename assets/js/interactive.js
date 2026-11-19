@@ -65,7 +65,7 @@
         observer.unobserve(target);
       }
     }, { threshold: 0.12 });
-    const groups = document.querySelectorAll(".work-showcase, .skill-grid, .engineering-grid, .career");
+    const groups = document.querySelectorAll(".profile-focus, .work-showcase, .skill-grid, .engineering-grid, .career");
     for (const group of groups) {
       [...group.children].forEach((child, index) => {
         child.style.setProperty("--reveal-delay", `${(index % 3) * 55}ms`);
@@ -85,6 +85,56 @@
         target.style.removeProperty("--pointer-y");
       });
     }
+  }
+
+  function initCareerAccordion() {
+    const career = document.querySelector(".career");
+    if (!career || !("ResizeObserver" in window)) return;
+
+    const header = document.querySelector(".site-header");
+    const disclosures = [...career.querySelectorAll(".career-disclosure")];
+    const hasContentHeight = (disclosure) =>
+      disclosure.getBoundingClientRect().bottom - disclosure.firstElementChild.getBoundingClientRect().bottom > 1;
+    let stopFollowing;
+
+    career.addEventListener("click", (event) => {
+      const summary = event.target.closest(".career-disclosure > summary");
+      if (!summary) return;
+      stopFollowing?.();
+
+      const disclosure = summary.parentElement;
+      if (disclosure.open) return;
+      const closingAbove = disclosures.slice(0, disclosures.indexOf(disclosure)).filter(
+        (earlier) => earlier.open || hasContentHeight(earlier),
+      );
+      if (!closingAbove.length) return;
+
+      const card = disclosure.closest(".career-row");
+      const input = new AbortController();
+      const observer = new ResizeObserver(() => {
+        if (disclosure.open) {
+          const visibleTop = (header?.getBoundingClientRect().bottom ?? 0) + 12;
+          const offset = card.getBoundingClientRect().top - visibleTop;
+          // Correct only when the collapsing cards would pull this one behind the header.
+          if (offset < -1) scrollBy({ top: offset, behavior: "instant" });
+          if (closingAbove.some(hasContentHeight)) return;
+        }
+        stop();
+      });
+
+      function stop() {
+        observer.disconnect();
+        input.abort();
+        stopFollowing = undefined;
+      }
+
+      stopFollowing = stop;
+      closingAbove.forEach((earlier) => observer.observe(earlier));
+      const options = { passive: true, signal: input.signal };
+      addEventListener("wheel", stop, options);
+      addEventListener("touchmove", stop, options);
+      addEventListener("keydown", stop, options);
+    });
   }
 
   function initScrollEffects() {
@@ -329,5 +379,6 @@
   const contact = document.querySelector(".contact-form");
   if (contact) initContact(contact);
   initMotion();
+  initCareerAccordion();
   initScrollEffects();
 })();

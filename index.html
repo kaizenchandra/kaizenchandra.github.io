@@ -52,11 +52,11 @@
       <div class="container header-inner">
         <a class="brand" href="#home" aria-label="CV — Chandrashekhar Vishwakarma, home"><span>CV</span></a>
         <nav id="primary-nav" aria-label="Primary">
-          <a href="#experience">Experience</a>
-          <a href="#projects">Selected work</a>
-          <a href="#expertise">Skills</a>
-          <a href="blog/index.html">Blog</a>
-          <a href="lab/index.html">Lab</a>
+          <a href="#about">About</a>
+          <a href="#experience">Work Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#expertise">Tech Skills</a>
+          <a href="https://medium.com/@code.chandrashekhar">Blog</a>
           <a href="#contact">Contact</a>
         </nav>
         <div class="header-actions">
@@ -89,7 +89,7 @@
           </div>
           <h1 id="hero-title" class="kinetic-title">Chandrashekhar <span>Vishwakarma</span></h1>
           <p class="hero-role">Lead Software Engineer &amp;<br class="wide-break" /> Technology Architect</p>
-          <p class="hero-summary">I design, build, and modernize distributed enterprise systems with Java, Go, Spring Boot, and Kafka on AWS and GCP.</p>
+          <p class="hero-summary">Design, build, test, deploy and modernize distributed enterprise systems with Java, Go, Spring Boot, and Kafka on AWS and GCP.</p>
           <div class="actions">
             <a class="button button-primary magnetic-button" href="#experience">View experience <span aria-hidden="true">↓</span></a>
             <a class="button button-secondary magnetic-button" href="resume/chandrashekhar-vishwakarma.pdf" download>Download PDF <span aria-hidden="true">↓</span></a>
@@ -97,38 +97,38 @@
           </div>
         </div>
 
-        <figure class="system-figure parallax-panel">
-          <figcaption><span aria-hidden="true"></span> Event-driven systems <small>Conceptual</small></figcaption>
-          <div class="system-map" role="img" aria-label="Conceptual map of Kafka connecting event contracts, Java and Go services, cloud runtime, and observability.">
-            <div class="system-ring ring-outer"></div>
-            <div class="system-ring ring-inner"></div>
-            <div class="system-line horizontal"></div>
-            <div class="system-line vertical"></div>
-            <div class="system-core"><span class="core-icon"></span><strong>Kafka</strong></div>
-            <span class="system-node node-events"><b></b> Event contracts</span>
-            <span class="system-node node-services"><b></b> Java / Go services</span>
-            <span class="system-node node-cloud"><b></b> Cloud runtime</span>
-            <span class="system-node node-traces"><b></b> Observability</span>
-            <i class="system-signal signal-top"></i>
-            <i class="system-signal signal-side"></i>
-          </div>
-          <div class="system-footer"><span>Services <b>↔</b> Events</span><span>AWS <b>/</b> GCP</span></div>
-        </figure>
       </section>
 
       <div class="container">
         <dl class="impact" aria-label="Career highlights">
-          <div><dt>10+ years</dt><dd>Enterprise engineering</dd></div>
-          <div><dt>20%</dt><dd>Improvement in IFC delivery efficiency</dd></div>
-          <div><dt>25%</dt><dd>Fewer timeout-related failures on Stafftravel Voyage</dd></div>
+          <div><dt>10+ years</dt><dd>Software Engineering</dd></div>
+          <div><dt>3+ years</dt><dd>Designing Solution - Architect</dd></div>
+          <div><dt>5+</dt><dd>Technical Leadership</dd></div>
         </dl>
       </div>
 
-      <section id="about" class="section container profile" aria-labelledby="about-title">
-        <h2 id="about-title">Architecture &amp;<br class="wide-break" /> hands-on delivery</h2>
-        <div>
-          <p>I work across banking, insurance, retail, and industrial domains. My work spans service boundaries, API and event contracts, asynchronous messaging, and the decisions that make systems scalable, reliable, secure, and observable.</p>
-          <p>I stay close to implementation through performance optimization, production readiness, technical design reviews, cross-functional collaboration, and mentoring engineers.</p>
+      <section id="about" class="section container" aria-labelledby="about-title">
+        <div class="profile-panel">
+          <div class="profile-intro">
+            <h2 id="about-title">About me</h2>
+            <p class="profile-lead">I build and modernize enterprise systems.</p>
+            <p>I’m a Lead Software Engineer and Technology Architect with 10+ years of experience across banking, financial services, insurance, retail, and industrial sectors.</p>
+            <a class="button button-secondary" href="#projects">Explore Projects <span aria-hidden="true">↓</span></a>
+          </div>
+          <ul class="profile-focus" role="list">
+            <li>
+              <h3>Distributed systems</h3>
+              <p>I design event-driven systems and define service boundaries, API and event contracts, and asynchronous workflows.</p>
+            </li>
+            <li>
+              <h3>Cloud-native engineering</h3>
+              <p>I build microservices with Java, Spring Boot, Go, and Apache Kafka on AWS and Google Cloud, designing for scalability, reliability, security, and observability.</p>
+            </li>
+            <li>
+              <h3>Technical leadership</h3>
+              <p>I lead design reviews, tune performance, and mentor engineers. I work with product, security, and platform teams to turn complex requirements into maintainable, production-ready systems.</p>
+            </li>
+          </ul>
         </div>
       </section>
 
@@ -146,10 +146,10 @@
                 <h3>Publicis Sapient</h3>
                 <p class="job-title">Manager Technology</p>
                 <p class="engagement">Tesco · Distributed Video Platform</p>
-                <p>Contribute to solution architecture for a hybrid cloud-edge eventing platform. Define microservice boundaries, API and event contracts, integration patterns, and non-functional requirements.</p>
-                <details class="disclosure">
-                  <summary>Architecture and production readiness</summary>
-                  <ul>
+                <details class="disclosure career-disclosure" name="career-responsibilities">
+                  <summary aria-label="Roles &amp; Responsibility for Publicis Sapient">Roles &amp; Responsibility</summary>
+                  <ul class="career-highlights">
+                    <li>Contribute to solution architecture for a hybrid cloud-edge eventing platform by defining microservice boundaries, API and event contracts, integration patterns, and non-functional requirements.</li>
                     <li>Design asynchronous processing, multi-tenant capabilities, messaging workflows, data lifecycle management, and failure isolation.</li>
                     <li>Own ADRs for messaging, storage, service integration, tenant isolation, and resilience. Evaluate trade-offs and risk in cross-team design reviews.</li>
                     <li>Establish standards for timeouts, retries with exponential backoff, circuit breakers, idempotency, SLOs, error budgets, and failure recovery.</li>
@@ -164,11 +164,11 @@
                 <h3>HTC Global Services</h3>
                 <p class="job-title">Technical Lead</p>
                 <p class="engagement">World Bank Group (IFC), CNA Insurance · IPortal, IDesk, IBIS, CNA Central</p>
-                <p>Led CNA Insurance’s event-driven document post-processing platform and modernized IFC applications from architecture through deployment and production readiness, improving IFC delivery efficiency by <strong>20%</strong>.</p>
-                <details class="disclosure">
-                  <summary>Integrations and technical leadership</summary>
-                  <ul>
-                    <li>Integrated SmartCOMM, Cloud Storage, Cloud Pub/Sub, and SFTP for asynchronous document workflows, with failure handling across storage, messaging, and downstream systems.</li>
+                <details class="disclosure career-disclosure" name="career-responsibilities">
+                  <summary aria-label="Roles &amp; Responsibility for HTC Global Services">Roles &amp; Responsibility</summary>
+                  <ul class="career-highlights">
+                    <li>Modernized IFC applications from architecture through deployment and production readiness, improving IFC delivery efficiency by <strong>20%</strong>.</li>
+                    <li>Led CNA Insurance’s event-driven document post-processing platform. Integrated SmartCOMM, Cloud Storage, Cloud Pub/Sub, and SFTP for asynchronous workflows, with failure handling across storage, messaging, and downstream systems.</li>
                     <li>Designed REST APIs, data models, and integrations using Clean Architecture, SOLID, automated and contract testing, and CI/CD.</li>
                     <li>Led architecture and code reviews, estimation, dependency planning, technical risk management, production troubleshooting, and engineering mentorship.</li>
                   </ul>
@@ -181,10 +181,10 @@
                 <h3>Siemens</h3>
                 <p class="job-title">Senior Software Development Engineer</p>
                 <p class="engagement">Siemens Xcelerator and Energy · IAH, ICMA, OAM</p>
-                <p>Built Java, Spring Boot, and Go microservices, REST APIs, and distributed backend services for industrial and energy platforms. Used Kafka and RabbitMQ to decouple services and enable asynchronous communication.</p>
-                <details class="disclosure">
-                  <summary>Cloud delivery and performance</summary>
-                  <ul>
+                <details class="disclosure career-disclosure" name="career-responsibilities">
+                  <summary aria-label="Roles &amp; Responsibility for Siemens">Roles &amp; Responsibility</summary>
+                  <ul class="career-highlights">
+                    <li>Built Java, Spring Boot, and Go microservices, REST APIs, and distributed backend services for industrial and energy platforms. Used Kafka and RabbitMQ to decouple services and enable asynchronous communication.</li>
                     <li>Built containerized and serverless AWS applications with EKS, ECS/Fargate, Lambda, S3, SQS/SNS, RDS, DynamoDB, API Gateway, ECR, and CloudWatch.</li>
                     <li>Improved performance and maintainability with SQL query tuning, distributed caching, JVM tuning, and architectural refactoring.</li>
                     <li>Applied domain-driven and API-first design. Evaluated performance, data consistency, scalability, reliability, and operational trade-offs with engineering, product, QA, and platform teams.</li>
@@ -197,8 +197,14 @@
               <article>
                 <h3>Cyber Infrastructure (CIS)</h3>
                 <p class="job-title">Senior Software Engineer</p>
-                <p class="engagement">Stafftravel Voyage</p>
-                <p>Built an asynchronous reporting platform with Java, Spring Boot, and JasperReports. It processed millions of records and reduced timeout-related failures by <strong>25%</strong>. Delivered solutions across five client engagements, translating requirements into implementations and delivery estimates, and contributed to a <strong>20%</strong> improvement in client satisfaction.</p>
+                <p class="engagement">Stafftravel Voyage, Applepolitical</p>
+                <details class="disclosure career-disclosure" name="career-responsibilities">
+                  <summary aria-label="Roles &amp; Responsibility for Cyber Infrastructure (CIS)">Roles &amp; Responsibility</summary>
+                  <ul class="career-highlights">
+                    <li>Built an asynchronous reporting platform with Java, Spring Boot, and JasperReports that processed millions of records and reduced timeout-related failures by <strong>25%</strong>.</li>
+                    <li>Delivered solutions across <strong>five client engagements</strong>, translating requirements into implementations and delivery estimates and contributing to a <strong>20% improvement</strong> in client satisfaction.</li>
+                  </ul>
+                </details>
               </article>
             </li>
             <li class="career-row">
@@ -207,7 +213,14 @@
                 <h3>STC</h3>
                 <p class="job-title">Software Engineer</p>
                 <p class="engagement">ECMA, ERPORG</p>
-                <p>Resolved <strong>10</strong> critical production issues across business logic, APIs, databases, and UI components. Enhanced <strong>five</strong> modules through feature development, defect resolution, and testing, and maintained enterprise applications through releases and reliability improvements.</p>
+                <details class="disclosure career-disclosure" name="career-responsibilities">
+                  <summary aria-label="Roles &amp; Responsibility for STC">Roles &amp; Responsibility</summary>
+                  <ul class="career-highlights">
+                    <li>Resolved <strong>10 critical production issues</strong> across business logic, APIs, databases, and UI components.</li>
+                    <li>Enhanced <strong>five modules</strong> through feature development, defect resolution, and testing.</li>
+                    <li>Maintained enterprise applications through releases and reliability improvements.</li>
+                  </ul>
+                </details>
               </article>
             </li>
           </ol>
@@ -215,7 +228,7 @@
       </section>
 
       <section id="projects" class="section container" aria-labelledby="projects-title">
-        <div class="section-heading"><h2 id="projects-title">Selected work</h2></div>
+        <div class="section-heading"><h2 id="projects-title">Projects</h2></div>
         <div data-filter data-filter-item="project" data-noun="projects">
           <fieldset class="filter-controls" hidden>
             <legend>Filter projects</legend>
@@ -373,13 +386,13 @@
           </fieldset>
           <div class="skill-grid">
             <article data-skill="Development"><h3>Languages &amp; frameworks</h3><p>Java 17/21, Go, Spring Boot, Spring Framework, Spring Cloud, Spring Security, Spring WebFlux, Spring Data JPA, Spring Batch, Hibernate ORM, Python, Scala, Kotlin, Node.js, React, Angular</p></article>
-            <article data-skill="Architecture"><h3>System design &amp; architecture</h3><p>Microservices, event-driven architecture, domain-driven design, Clean Architecture, SOLID, API-first design, design patterns, high availability, scalability, resiliency</p></article>
+            <article data-skill="Architecture"><h3>System design &amp; architecture</h3><p>Microservices, event-driven architecture, cloud-native architecture, domain-driven design, Clean Architecture, SOLID, API-first design, design patterns, high availability, scalability, resiliency</p></article>
             <article data-skill="Architecture|Development"><h3>Messaging, integration &amp; APIs</h3><p>Apache Kafka, Kafka Streams, Flink, RabbitMQ, Google Cloud Pub/Sub, Schema Registry, CDC, event ordering, schema evolution, REST APIs, gRPC, GraphQL, WebSockets, SSE</p></article>
-            <article data-skill="Platform"><h3>Cloud &amp; platform engineering</h3><p>AWS EKS, ECS/Fargate, Lambda, S3, SQS, SNS, RDS, DynamoDB, API Gateway, CloudWatch. Google Cloud Storage and Pub/Sub. Docker, Kubernetes, Helm, Terraform</p></article>
+            <article data-skill="Platform"><h3>Cloud &amp; platform engineering</h3><p>AWS EKS, ECS/Fargate, Lambda, S3, SQS, SNS, RDS, DynamoDB, API Gateway, CloudWatch. Google Cloud (GCP) with Cloud Storage and Pub/Sub. Docker, Kubernetes, Helm, Terraform</p></article>
             <article data-skill="Development|Platform"><h3>Databases &amp; caching</h3><p>PostgreSQL, Oracle, Redis, MongoDB, Cassandra, Couchbase, InfluxDB, SQL optimization, distributed caching, transactions, data consistency, partitioning, sharding, replication</p></article>
-            <article data-skill="Architecture|Platform"><h3>Reliability, security &amp; observability</h3><p>Idempotency, circuit breakers, retries with exponential backoff, transactional outbox, saga, OAuth 2.0, OpenID Connect, JWT, mTLS, OpenTelemetry, Prometheus, Grafana, Datadog, New Relic</p></article>
+            <article data-skill="Architecture|Platform"><h3>Reliability, security &amp; observability</h3><p>Idempotency, circuit breakers, retries with exponential backoff, transactional outbox, saga, OAuth 2.0, OpenID Connect (OIDC), JWT, mTLS, OpenTelemetry, Prometheus, Grafana, Datadog, New Relic, Splunk</p></article>
             <article data-skill="Development|Platform"><h3>Testing &amp; DevOps</h3><p>JUnit 5, Mockito, Testcontainers, REST Assured, Git, CI/CD, GitHub Actions, GitLab CI, Azure Pipelines, SonarQube</p></article>
-            <article data-skill="Leadership"><h3>Engineering leadership</h3><p>Technical design, architecture decision records, code reviews, production troubleshooting, technical risk management, engineering mentorship, cross-functional collaboration</p></article>
+            <article data-skill="Leadership"><h3>Engineering leadership</h3><p>Technical design, architecture decision records (ADRs), code reviews, production troubleshooting, technical risk management, engineering mentorship, cross-functional collaboration</p></article>
           </div>
         </div>
         </div>
@@ -404,9 +417,18 @@
           </div>
           <address class="contact-links">
             <div>
-              <span>Email</span>
-              <a class="contact-email" href="mailto:code.chandrashekhar@hotmail.com">code.chandrashekhar@hotmail.com</a>
-              <button class="copy-email" type="button" hidden>Copy email address</button>
+              <a class="icon-button contact-email" href="mailto:code.chandrashekhar@hotmail.com" aria-label="Send an email" title="Send an email">
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="3" y="5" width="18" height="14" rx="2" />
+                  <path d="m3 7 9 6 9-6" />
+                </svg>
+              </a>
+              <button class="icon-button copy-email" type="button" aria-label="Copy email address" title="Copy email address" hidden>
+                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="8" y="8" width="12" height="12" rx="2" />
+                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" />
+                </svg>
+              </button>
             </div>
             <div><span>Phone</span><a href="tel:+919109250699">+91-9109250699</a><a href="tel:+919691714192">+91-9691714192</a></div>
             <div><span>Profiles</span><a href="https://linkedin.com/in/chandrashekhar-vishwakarma">LinkedIn ↗</a><a href="https://github.com/kaizenchandra">GitHub ↗</a></div>

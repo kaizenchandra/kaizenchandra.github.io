@@ -119,29 +119,6 @@
   transition: transform .3s ease;
 }
 
-.career-meta {
-  position: relative;
-  align-self: stretch;
-  padding-left: 1.1rem;
-}
-
-.career-meta::before {
-  position: absolute;
-  inset: .2rem auto .1rem .19rem;
-  border-left: 1px solid var(--line);
-  content: "";
-}
-
-.career-meta::after {
-  position: absolute;
-  inset: .36rem auto auto 0;
-  width: .45rem;
-  height: .45rem;
-  border-radius: 50%;
-  background: var(--brand);
-  content: "";
-}
-
 .architecture-intro, .architecture-flow p {
   margin: .4rem 0 1rem;
   color: var(--muted);
@@ -798,8 +775,29 @@
   .in-view { animation: gentle-reveal .36s var(--reveal-delay, 0ms) ease both; }
   .in-view:focus-within { animation: none; }
 
-  .parallax-panel .ring-outer { transform: translateY(var(--parallax-offset, 0px)); }
-  .parallax-panel .ring-inner { transform: translateY(calc(var(--parallax-offset, 0px) * -.6)); }
+  .skills-map.parallax-panel::before { transform: translateY(var(--parallax-offset, 0px)); }
+
+  .career-row {
+    --career-transition-duration: .24s;
+    transition: border-color var(--career-transition-duration) ease;
+  }
+
+  .career-disclosure > summary::before {
+    transition: rotate var(--career-transition-duration) ease, margin-top var(--career-transition-duration) ease;
+  }
+
+  @supports selector(::details-content) and (transition-behavior: allow-discrete) {
+    .career-disclosure::details-content {
+      display: grid;
+      grid-template-rows: minmax(0, 0fr);
+      overflow: clip;
+      transition: grid-template-rows var(--career-transition-duration) ease,
+        content-visibility var(--career-transition-duration) allow-discrete;
+    }
+
+    .career-disclosure[open]::details-content { grid-template-rows: minmax(0, 1fr); }
+    .career-disclosure > .career-highlights { align-self: start; }
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
