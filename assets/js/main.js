@@ -73,13 +73,14 @@
       setOpen(false);
     });
     setOpen(false);
+    root.classList.remove("nav-pending");
   }
 
   function initScrollSpy(nav) {
     if (!nav) return;
 
     const header = document.querySelector(".site-header");
-    const links = [...nav.querySelectorAll("a")];
+    const links = [...nav.querySelectorAll('a[href^="#"]')];
     const sections = links.map((link) => document.getElementById(link.hash.slice(1)));
     let lastActive;
     let scheduled = false;
@@ -130,7 +131,7 @@
         await navigator.clipboard.writeText(address.getAttribute("href").slice("mailto:".length));
         status.textContent = "Email address copied.";
       } catch (_) {
-        status.textContent = "Select the address above to copy it, or choose Send an email.";
+        status.textContent = "Select the email address to copy it, or choose Send an email.";
       }
       timeout = setTimeout(() => { status.textContent = ""; }, 3500);
     });

@@ -1,0 +1,44 @@
+{
+  "cases": [
+    {
+      "slug": "distributed-video",
+      "title": "Distributed Video Platform",
+      "organization": "Tesco · Publicis Sapient",
+      "description": "Designing service boundaries, event contracts, and failure isolation for a hybrid cloud-edge platform."
+    },
+    {
+      "slug": "document-processing",
+      "title": "Document post-processing",
+      "organization": "CNA Insurance · HTC Global Services",
+      "description": "Leading delivery of an asynchronous document workflow across cloud storage, messaging, and SFTP."
+    },
+    {
+      "slug": "industrial-platforms",
+      "title": "Industrial and energy platforms",
+      "organization": "Siemens Xcelerator and Energy",
+      "description": "Building distributed backend services and implementing asynchronous integrations across AWS workloads."
+    },
+    {
+      "slug": "ifc-modernization",
+      "title": "IFC application modernization",
+      "organization": "World Bank Group (IFC) · HTC Global Services",
+      "description": "Leading microservices modernization that improved IFC delivery efficiency by 20%."
+    },
+    {
+      "slug": "reporting-at-scale",
+      "title": "Asynchronous reporting at scale",
+      "organization": "Stafftravel Voyage · Cyber Infrastructure",
+      "description": "Processing millions of records and reducing timeout-related reporting failures by 25%."
+    }
+  ],
+  "posts": [
+    {
+      "slug": "idempotent-event-consumers",
+      "title": "Designing idempotent event consumers",
+      "description": "A practical example of duplicate delivery, atomic side effects, and recovery in event-driven systems.",
+      "draft": true
+    }
+  ],
+  "recommendations": [],
+  "certifications": []
+}

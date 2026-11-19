@@ -227,11 +227,30 @@ button {
 
 .hero-copy { padding-block: .25rem; }
 
+.hero-identity {
+  display: flex;
+  align-items: center;
+  gap: clamp(.75rem, 1.7vw, 1.25rem);
+  margin-bottom: 1.4rem;
+}
+
+.hero-portrait {
+  display: block;
+  flex: none;
+  width: clamp(3.75rem, 7vw, 5.75rem);
+  height: auto;
+  aspect-ratio: 1;
+  padding: .2rem;
+  border: 1px solid var(--line);
+  border-radius: 23%;
+  background: var(--surface);
+  object-fit: cover;
+}
+
 .current-role {
   display: flex;
   align-items: center;
   gap: .55rem;
-  margin-bottom: 1.5rem;
   color: var(--brand);
   font-size: .875rem;
   font-weight: 700;
@@ -875,7 +894,9 @@ button {
   .header-inner nav[data-collapsed="true"] { display: none !important; }
   .header-inner nav[data-collapsed] a[aria-current]::after { width: 2rem; }
   .header-inner:not(:has(nav[data-collapsed])) { row-gap: 0; padding-top: .65rem; }
-  :root:not(:has(nav[data-collapsed])) { --header-height: 120px; }
+  :root:has(.header-inner):not(.nav-pending):not(:has(nav[data-collapsed])) { --header-height: 120px; }
+  .nav-pending .header-inner { padding-top: 0; }
+  .nav-pending .header-inner nav { display: none !important; }
   .menu-toggle { display: inline-flex; }
 
   .hero {
@@ -889,13 +910,15 @@ button {
 }
 
 @media (max-width: 660px) {
+  :root:has(.header-inner):not(.nav-pending):not(:has(nav[data-collapsed])) { --header-height: 152px; }
+
   .hero, .profile, .education, .project-feature, .contact-inner, .project-grid, .skill-grid {
     grid-template-columns: minmax(0, 1fr);
   }
 
   .hero { gap: 1.75rem; padding-block: 2.75rem 1.75rem; }
   .hero h1 { font-size: clamp(2.125rem, 9.8vw, 4.6rem); }
-  .current-role { margin-bottom: 1rem; }
+  .hero-identity { margin-bottom: 1rem; }
   .hero-role { margin-top: .95rem; }
   .hero-summary { margin-top: .75rem; }
   .actions { margin-top: 1.15rem; }

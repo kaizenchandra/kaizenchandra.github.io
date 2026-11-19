@@ -1,0 +1,69 @@
+<header class="article-header">
+  <h1>Engineering lab</h1>
+  <p class="lead">Edit and run two small JavaScript examples of event handling and failure recovery.</p>
+</header>
+<div class="lab-grid">
+  <details id="idempotency" class="project-card lab-example">
+    <summary><h2>Idempotent event processing</h2></summary>
+    <p>Deliver one event twice and inspect the resulting balance. This in-memory example illustrates the behavior of a deduplicating consumer.</p>
+    <pre class="sample-source"><code>const events = [
+  { id: "deposit-1", amount: 70 },
+  { id: "deposit-2", amount: 30 },
+  { id: "deposit-1", amount: 70 },
+];
+
+const processed = new Set();
+let balance = 0;
+
+for (const event of events) {
+  if (processed.has(event.id)) {
+    console.log("Skipped duplicate:", event.id);
+    continue;
+  }
+
+  processed.add(event.id);
+  balance += event.amount;
+  console.log("Applied:", event.id);
+}
+
+console.log("Final balance:", balance);</code></pre>
+  </details>
+
+  <details id="backoff" class="project-card lab-example">
+    <summary><h2>Exponential backoff</h2></summary>
+    <p>Simulate a transient dependency failure and calculate the delay before each retry. Edit the number of failures to see what happens when the retry budget runs out.</p>
+    <pre class="sample-source"><code>const transientFailures = 2;
+const maxAttempts = 4;
+const initialDelayMs = 100;
+let delivered = false;
+
+for (let attempt = 1; attempt &lt;= maxAttempts; attempt++) {
+  if (attempt &gt; transientFailures) {
+    console.log("Delivered on attempt", attempt);
+    delivered = true;
+    break;
+  }
+
+  console.log("Transient failure on attempt", attempt);
+  if (attempt &lt; maxAttempts) {
+    const delay = initialDelayMs * 2 ** (attempt - 1);
+    console.log("Scheduled retry in", delay, "ms");
+  }
+}
+
+if (!delivered) console.log("Retry budget exhausted.");</code></pre>
+  </details>
+
+  <section class="terminal" aria-labelledby="terminal-title" hidden>
+    <h2 id="terminal-title">Portfolio terminal</h2>
+    <p>Try <code>help</code>, <code>projects</code>, <code>skills</code>, or <code>contact</code>.</p>
+    <form>
+      <label for="terminal-command">Command</label>
+      <input id="terminal-command" name="command" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="32" required />
+      <button class="button button-primary" type="submit">Run</button>
+    </form>
+    <div class="terminal-output" role="status"></div>
+  </section>
+</div>
+<div class="copy-toast" role="status" aria-atomic="true" data-lab-toast></div>
+<script src="../assets/js/lab.js" defer></script>
