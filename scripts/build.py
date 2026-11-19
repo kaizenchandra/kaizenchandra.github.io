@@ -81,7 +81,7 @@ def page(title, description, route, depth, content, schema_type, draft=False):
       <nav aria-label="Portfolio">
         <a href="{prefix}index.html#projects">Work</a>
         <a href="{prefix}blog/index.html">Blog</a>
-        <a href="{prefix}lab/index.html">Lab</a>
+        <a href="{prefix}lab/index.html"{' aria-current="page"' if route == 'lab/' else ''}>Lab</a>
       </nav>
       <button class="icon-button theme-toggle" type="button" aria-label="Switch color theme" hidden>◐</button>
     </div>

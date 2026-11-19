@@ -97,18 +97,32 @@
   function attachEditor(example) {
     const sample = example.querySelector(".sample-source");
     const original = sample.textContent;
+    const emptyOutput = "Run the example to see output here.";
     const controls = document.createElement("div");
     controls.className = "lab-controls";
     controls.innerHTML = `
-      <label for="${example.id}-code">JavaScript source</label>
-      <textarea class="lab-editor" id="${example.id}-code" maxlength="12000" spellcheck="false"></textarea>
-      <div class="actions">
-        <button class="button button-primary" type="button" data-run>Run code</button>
-        <button class="button button-secondary" type="button" data-reset>Reset</button>
-        <button class="button button-secondary" type="button" data-copy>Copy code</button>
+      <div class="lab-toolbar">
+        <button class="button button-primary" type="button" aria-keyshortcuts="Control+Enter Meta+Enter" data-run><span aria-hidden="true">▶</span> Run code</button>
+        <span class="lab-shortcut"><kbd>Ctrl / ⌘</kbd> + <kbd>Enter</kbd></span>
+        <p class="lab-editor-status" data-state="ready" role="status">Ready to run</p>
       </div>
-      <p class="lab-editor-status" role="status">Ready to run.</p>
-      <pre class="lab-output" aria-label="Code output" tabindex="0"></pre>`;
+      <div class="lab-panes">
+        <div class="lab-pane">
+          <div class="lab-pane-heading">
+            <label for="${example.id}-code">JavaScript source</label>
+            <div class="lab-code-actions">
+              <button type="button" data-reset>Reset</button>
+              <button type="button" data-copy>Copy code</button>
+            </div>
+          </div>
+          <textarea class="lab-editor" id="${example.id}-code" maxlength="12000" wrap="off" autocomplete="off" autocapitalize="off" spellcheck="false"></textarea>
+        </div>
+        <div class="lab-pane lab-output-pane">
+          <div class="lab-pane-heading"><h3 id="${example.id}-output-title">Output</h3></div>
+          <pre class="lab-output" aria-labelledby="${example.id}-output-title" tabindex="0" data-empty>${emptyOutput}</pre>
+        </div>
+      </div>
+    `;
 
     const editor = controls.querySelector("textarea");
     const output = controls.querySelector(".lab-output");
@@ -116,22 +130,42 @@
     const run = controls.querySelector("[data-run]");
     const reset = controls.querySelector("[data-reset]");
 
+    function setStatus(state, label) {
+      status.dataset.state = state;
+      status.textContent = label;
+    }
+
     editor.value = original;
     sample.replaceWith(controls);
+    editor.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && (event.ctrlKey || event.metaKey)) {
+        event.preventDefault();
+        run.click();
+      }
+    });
     run.addEventListener("click", async () => {
-      run.disabled = true;
-      reset.disabled = true;
-      status.textContent = "Running example…";
-      const result = await execute(editor.value);
+      if (run.getAttribute("aria-disabled") === "true") return;
+      run.setAttribute("aria-disabled", "true");
+      reset.setAttribute("aria-disabled", "true");
+      output.setAttribute("aria-busy", "true");
+      setStatus("running", "Running code…");
+      const result = await execute(editor.value).catch(() => ({
+        output: "The isolated runner could not start.",
+        error: true,
+      }));
       output.textContent = result.output;
-      status.textContent = result.error ? "Execution stopped. See code output for details." : "Run finished. Code output updated.";
-      run.disabled = false;
-      reset.disabled = false;
+      output.removeAttribute("data-empty");
+      output.removeAttribute("aria-busy");
+      setStatus(result.error ? "error" : "complete", result.error ? "Execution stopped" : "Output ready");
+      run.removeAttribute("aria-disabled");
+      reset.removeAttribute("aria-disabled");
     });
     reset.addEventListener("click", () => {
+      if (reset.getAttribute("aria-disabled") === "true") return;
       editor.value = original;
-      output.textContent = "";
-      status.textContent = "Example reset.";
+      output.textContent = emptyOutput;
+      output.setAttribute("data-empty", "");
+      setStatus("ready", "Example reset");
     });
     controls.querySelector("[data-copy]").addEventListener("click", async () => {
       try {
@@ -156,6 +190,13 @@
     ]);
 
     terminal.hidden = false;
+    document.querySelector("[data-terminal-link]").hidden = false;
+    for (const shortcut of terminal.querySelectorAll("[data-command]")) {
+      shortcut.addEventListener("click", () => {
+        input.value = shortcut.dataset.command;
+        form.requestSubmit();
+      });
+    }
     form.addEventListener("submit", (event) => {
       event.preventDefault();
       const command = input.value.trim().toLowerCase();
@@ -176,17 +217,43 @@
     });
   }
 
-  for (const example of document.querySelectorAll(".lab-example")) {
-    function openEditor() {
-      if (example.open && example.querySelector(".sample-source")) attachEditor(example);
+  function initExamples() {
+    const examples = [...document.querySelectorAll(".lab-example")];
+    const links = document.querySelectorAll("[data-lab-example]");
+
+    function select(id) {
+      const target = id ? examples.find((example) => example.id === id) : examples[0];
+      if (!target) return;
+
+      const focusedExample = document.activeElement.closest(".lab-example");
+      for (const example of examples) example.hidden = example !== target;
+      for (const link of links) {
+        if (link.hash === `#${target.id}`) link.setAttribute("aria-current", "location");
+        else link.removeAttribute("aria-current");
+      }
+      if (target.querySelector(".sample-source")) attachEditor(target);
+      if (focusedExample && focusedExample !== target) {
+        target.querySelector("textarea").focus({ preventScroll: true });
+      }
+      return target;
     }
-    example.addEventListener("toggle", openEditor);
+
+    for (const link of links) {
+      link.addEventListener("click", (event) => {
+        if (event.button !== 0 || event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+        event.preventDefault();
+        if (location.hash !== link.hash) history.pushState(null, "", link.hash);
+        select(link.hash.slice(1));
+      });
+    }
+
+    addEventListener("hashchange", () => select(location.hash.slice(1)));
+    const initial = select(location.hash.slice(1)) || select("");
+    if (location.hash === `#${initial.id}`) {
+      requestAnimationFrame(() => initial.scrollIntoView({ behavior: "instant" }));
+    }
   }
-  function openLinkedExample() {
-    const example = document.getElementById(location.hash.slice(1));
-    if (example?.classList.contains("lab-example")) example.open = true;
-  }
-  addEventListener("hashchange", openLinkedExample);
-  openLinkedExample();
+
   initTerminal(document.querySelector(".terminal"));
+  initExamples();
 })();
