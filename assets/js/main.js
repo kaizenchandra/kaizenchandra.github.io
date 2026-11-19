@@ -116,6 +116,26 @@
         update();
     }
 
+    function initTopologyTrace() {
+        const diagram = document.querySelector(".hero-topology");
+        if (!diagram) return;
+
+        const controls = diagram.querySelector(".topology-switch");
+        const buttons = [...controls.querySelectorAll("[data-show-trace]")];
+        const notes = [...diagram.querySelectorAll("[data-trace-note]")];
+
+        controls.addEventListener("click", (event) => {
+            const button = event.target.closest("[data-show-trace]");
+            if (!button || button.dataset.showTrace === diagram.dataset.trace) return;
+
+            const trace = button.dataset.showTrace;
+            diagram.dataset.trace = trace;
+            for (const option of buttons) option.setAttribute("aria-pressed", String(option === button));
+            for (const note of notes) note.hidden = note.dataset.traceNote !== trace;
+        });
+        controls.hidden = false;
+    }
+
     function initCopyActions() {
         const button = document.querySelector(".copy-email");
         const address = document.querySelector(".contact-email");
@@ -141,6 +161,7 @@
     const nav = document.querySelector("#primary-nav");
     initMobileNavigation(nav);
     initScrollSpy(nav);
+    initTopologyTrace();
     initCopyActions();
     document.querySelector(".back-to-top")?.addEventListener("click", () => {
         focusAnchor(document.getElementById("home"));

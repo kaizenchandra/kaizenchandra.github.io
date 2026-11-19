@@ -96,77 +96,92 @@
 </header>
 
 <main id="main" tabindex="-1">
-    <section aria-labelledby="hero-title" class="hero container" id="home">
-        <div class="hero-copy">
-            <p class="hero-role">Lead Software Engineer &amp; Technology Architect</p>
-            <h1 id="hero-title">Designing scalable, <span>resilient systems.</span></h1>
-            <p class="hero-summary">I design, build, test, deploy, and modernize cloud-native enterprise systems with
-                Java, Go, Spring Boot, and Kafka on AWS and GCP.</p>
-            <div class="hero-identity">
-                <img alt="Illustrated portrait of Chandrashekhar Vishwakarma" class="hero-portrait" decoding="async" height="320"
-                     src="assets/images/chandrashekhar-portrait.jpg" width="320"/>
-                <div>
-                    <p class="hero-name">Chandrashekhar Vishwakarma</p>
-                    <p class="current-role">Manager Technology at Publicis Sapient</p>
-                </div>
-            </div>
-            <ul aria-label="Core technologies" class="tags hero-tags" role="list">
-                <li>Java 17 / 21</li>
-                <li>Golang</li>
-                <li>Spring Boot</li>
-                <li>Kafka</li>
-                <li>React</li>
-                <li>AWS / GCP</li>
-            </ul>
-            <div class="actions">
-                <a class="button button-primary" href="#projects">Explore projects <span aria-hidden="true">↓</span></a>
-                <a class="button button-tonal" href="#architecture">Explore architecture <span
-                        aria-hidden="true">↓</span></a>
-            </div>
-            <div class="hero-links">
-                <a href="https://github.com/kaizenchandra">GitHub <span aria-hidden="true">↗</span></a>
-                <a href="https://linkedin.com/in/chandrashekhar-vishwakarma">LinkedIn <span aria-hidden="true">↗</span></a>
-                <a download href="resume/chandrashekhar-vishwakarma.pdf">Download Resume <span
-                        aria-hidden="true">↓</span></a>
-            </div>
-        </div>
-
-        <figure class="hero-topology">
-            <figcaption class="topology-heading">
-                <span class="evidence-label">Conceptual architecture</span>
-                <span class="topology-title">Cloud-native service topology</span>
-            </figcaption>
-            <div aria-hidden="true" class="topology-canvas">
-                <div class="topology-entry">
-                    <span><svg viewBox="0 0 24 24"><rect height="13" rx="2" width="18" x="3" y="4"/><path
-                            d="M8 21h8m-4-4v4"/></svg> Web / mobile</span>
-                    <i><b>HTTPS</b>
-                        <svg viewBox="0 0 24 24">
-                            <path d="M3 12h17m-5-5 5 5-5 5"/>
-                        </svg>
-                    </i>
-                    <span><svg viewBox="0 0 24 24"><path d="M12 3 3 8v8l9 5 9-5V8zM3 8l9 5 9-5m-9 5v8"/></svg> API gateway</span>
-                </div>
-                <div class="topology-drop"><span>Routes requests</span></div>
-                <div class="topology-cluster">
-                    <span class="cluster-label"><svg viewBox="0 0 24 24"><path
-                            d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/><circle cx="12" cy="12" r="4"/></svg> Kubernetes cluster</span>
-                    <div class="topology-services">
-                        <span>Identity service</span><span>Order service</span><span>Payment service</span>
+    <section aria-labelledby="hero-title" class="hero" id="home">
+        <div class="hero-layout container">
+            <div class="hero-copy">
+                <div class="hero-identity">
+                    <img alt="" class="hero-portrait" decoding="async" height="320"
+                         src="assets/images/chandrashekhar-portrait.jpg" width="320"/>
+                    <div>
+                        <p class="hero-name">Chandrashekhar Vishwakarma</p>
+                        <p class="current-role">Principal Software Engineer | Solution Architect</p>
                     </div>
                 </div>
-                <div class="topology-output">
-                    <div><i class="event-line"></i><strong>Kafka</strong><small>Order events</small></div>
-                    <div><i></i><strong>PostgreSQL</strong><small>Owned data</small></div>
-                    <div><i></i><strong>Redis</strong><small>Read cache</small></div>
+                <h1 id="hero-title">Designing scalable, <span>resilient systems.</span></h1>
+                <p class="hero-summary">I design, build, test, deploy, and modernize cloud-native enterprise systems with
+                    Java, Go, Spring Boot, and Kafka on AWS and GCP.</p>
+                <div class="actions hero-actions">
+                    <a class="button button-primary" href="#projects">Explore projects <span aria-hidden="true">↓</span></a>
+                    <a class="button button-secondary" href="#architecture">Explore architecture <span aria-hidden="true">↓</span></a>
                 </div>
             </div>
-            <p class="visually-hidden">A web or mobile client sends HTTPS requests through an API gateway into a
-                Kubernetes platform that contains Identity, Order, and Payment services. The platform publishes order
-                events through Kafka and uses PostgreSQL for service-owned data and Redis as a read cache.</p>
-            <div class="topology-footer">
+
+            <figure class="hero-topology" data-trace="request">
+                <figcaption class="topology-heading">
+                    <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></svg>
+                    <span>
+                        <span class="topology-kicker">Conceptual architecture</span>
+                        <span class="topology-title">Cloud-native service topology</span>
+                    </span>
+                </figcaption>
+                <div aria-label="Trace a flow" class="topology-switch" hidden role="group">
+                    <button aria-pressed="true" data-show-trace="request" type="button">HTTPS request</button>
+                    <button aria-pressed="false" data-show-trace="event" type="button">Order event</button>
+                </div>
+                <div aria-hidden="true" class="topology-canvas">
+                    <div class="topology-entry">
+                        <span class="topology-node topology-edge">
+                            <svg viewBox="0 0 24 24"><rect height="13" rx="2" width="18" x="3" y="4"/><path d="M8 21h8m-4-4v4"/></svg>
+                            Web / mobile
+                        </span>
+                        <span class="topology-transit">HTTPS <i></i></span>
+                        <span class="topology-node topology-edge">
+                            <svg viewBox="0 0 24 24"><path d="M12 3 3 8v8l9 5 9-5V8zM3 8l9 5 9-5m-9 5v8"/></svg>
+                            API gateway
+                        </span>
+                    </div>
+                    <div class="topology-route"><span></span></div>
+                    <div class="topology-cluster">
+                        <span class="cluster-label">
+                            <svg viewBox="0 0 24 24"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4"/><circle cx="12" cy="12" r="4"/></svg>
+                            Kubernetes cluster
+                        </span>
+                        <div class="topology-services">
+                            <span class="topology-node">Identity service</span>
+                            <span class="topology-node topology-order">Order service</span>
+                            <span class="topology-node">Payment service</span>
+                        </div>
+                    </div>
+                    <div class="topology-output">
+                        <div class="topology-node topology-events"><i></i><strong>Kafka</strong><small>Order events</small></div>
+                        <div class="topology-node"><i></i><strong>PostgreSQL</strong><small>Owned data</small></div>
+                        <div class="topology-node"><i></i><strong>Redis</strong><small>Read cache</small></div>
+                    </div>
+                </div>
+                <p class="topology-readout" role="status">
+                    <span data-trace-note="request">A web or mobile client sends an HTTPS request through the API gateway to the Order service.</span>
+                    <span data-trace-note="event" hidden>The Order service publishes an order event to Kafka for downstream consumers.</span>
+                </p>
+                <p class="visually-hidden">The Kubernetes cluster also runs Identity and Payment services. The platform
+                    publishes order events through Kafka, stores service-owned data in PostgreSQL, and uses Redis as a read cache.</p>
+            </figure>
+
+            <div class="hero-meta">
+                <div class="hero-links">
+                    <a href="https://github.com/kaizenchandra">GitHub <span aria-hidden="true">↗</span></a>
+                    <a href="https://linkedin.com/in/chandrashekhar-vishwakarma">LinkedIn <span aria-hidden="true">↗</span></a>
+                    <a download href="resume/chandrashekhar-vishwakarma.pdf">Download Resume <span aria-hidden="true">↓</span></a>
+                </div>
+                <ul aria-label="Core technologies" class="tags hero-tags" role="list">
+                    <li>Java 17 / 21</li>
+                    <li>Golang</li>
+                    <li>Spring Boot</li>
+                    <li>Kafka</li>
+                    <li>React</li>
+                    <li>AWS / GCP</li>
+                </ul>
             </div>
-        </figure>
+        </div>
     </section>
 
     <div class="container">
@@ -187,30 +202,43 @@
     </div>
 
     <section aria-labelledby="about-title" class="section container" id="about">
-        <div class="profile-panel">
-            <div class="profile-intro">
+        <div class="about-layout">
+            <header class="about-intro">
                 <h2 id="about-title">About me</h2>
-                <p class="profile-lead">I build and modernize enterprise systems.</p>
-                <p>I’m a Lead Software Engineer and Technology Architect with 10+ years of experience across banking,
-                    financial services, insurance, retail, and industrial sectors.</p>
+                <p class="about-headline">Build and modernize <span>enterprise systems.</span></p>
+                <p class="about-bio">Lead Software Engineer and Technology Architect with 10+ years of experience
+                    across banking, financial services, insurance, retail, and industrial sectors.</p>
+                <div class="actions about-actions">
+                    <a class="button button-primary" href="#experience">View experience <span aria-hidden="true">↓</span></a>
+                </div>
+            </header>
+
+            <div class="about-visual">
+                <img alt="A hand-drawn system architecture sketch beside a laptop with a code editor" decoding="async"
+                     height="960" loading="lazy" sizes="(min-width: 1360px) 540px, (min-width: 800px) 40vw, 85vw"
+                     src="assets/images/about-engineering-workspace.webp"
+                     srcset="assets/images/about-engineering-workspace-small.webp 480w, assets/images/about-engineering-workspace.webp 960w"
+                     width="960"/>
             </div>
-            <ul class="profile-focus" role="list">
-                <li>
-                    <h3>Distributed systems</h3>
+
+            <div class="about-focus">
+                <h3>Engineering focus</h3>
+                <details name="about-focus" open>
+                    <summary>Distributed systems</summary>
                     <p>I design event-driven systems and define service boundaries, API and event contracts, and
                         asynchronous workflows.</p>
-                </li>
-                <li>
-                    <h3>Cloud-native engineering</h3>
+                </details>
+                <details name="about-focus">
+                    <summary>Cloud-native engineering</summary>
                     <p>I build microservices with Java, Spring Boot, Go, and Apache Kafka on AWS and Google Cloud,
                         designing for scalability, reliability, security, and observability.</p>
-                </li>
-                <li>
-                    <h3>Technical leadership</h3>
+                </details>
+                <details name="about-focus">
+                    <summary>Technical leadership</summary>
                     <p>I lead design reviews, tune performance, and mentor engineers. I work with product, security, and
                         platform teams to turn complex requirements into maintainable, production-ready systems.</p>
-                </li>
-            </ul>
+                </details>
+            </div>
         </div>
     </section>
 
@@ -223,11 +251,11 @@
             </div>
             <p class="evidence-label">Conceptual reference architecture</p>
             <div class="capability-grid">
-                <a class="capability-card"><strong>Microservices</strong><span>Domain boundaries, API contracts, and data ownership.</span></a>
-                <a class="capability-card"><strong>Event-driven systems</strong><span>Kafka, transactional outbox, retries, and replay.</span></a>
-                <a class="capability-card"><strong>Cloud-native systems</strong><span>System context, provider dependencies, and availability.</span></a>
-                <a class="capability-card"><strong>Docker &amp; Kubernetes</strong><span>Container images, ingress, service routing, and rollouts.</span></a>
-                <a class="capability-card"><strong>Delivery &amp; infrastructure</strong><span>CI/CD, Helm releases, Terraform plans, and environment promotion.</span></a>
+                <a class="capability-card" href="architecture/index.html#services"><strong>Microservices</strong><span>Domain boundaries, API contracts, and data ownership.</span></a>
+                <a class="capability-card" href="architecture/index.html#events"><strong>Event-driven systems</strong><span>Kafka, transactional outbox, retries, and replay.</span></a>
+                <a class="capability-card" href="architecture/index.html#context"><strong>Cloud-native systems</strong><span>System context, provider dependencies, and availability.</span></a>
+                <a class="capability-card" href="architecture/index.html#deployment"><strong>Docker &amp; Kubernetes</strong><span>Container images, ingress, service routing, and rollouts.</span></a>
+                <a class="capability-card" href="architecture/index.html#delivery"><strong>Delivery &amp; infrastructure</strong><span>CI/CD, Helm releases, Terraform plans, and environment promotion.</span></a>
             </div>
             <section aria-labelledby="reference-title" class="reference-diagram">
                 <header class="reference-header">
@@ -946,7 +974,7 @@
         <nav aria-label="Footer" class="project-links">
             <a class="text-link" href="#projects">Projects</a>
             <a class="text-link" href="#education">Education</a>
-            <a class="text-link" href="blog/">Blogs</a>
+            <a class="text-link" href="https://medium.com/@code.chandrashekhar">Blogs</a>
             <a class="text-link" href="https://github.com/kaizenchandra">GitHub</a>
             <a class="text-link" href="#contact">Contact</a>
             <a class="text-link" href="resume/index.html">Resume</a>
